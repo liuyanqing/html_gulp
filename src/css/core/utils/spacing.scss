@@ -1,0 +1,77 @@
+// Margin and Padding
+@import "../base/variables/options";
+@import "../base/variables/spacing";
+@import "../base/variables/prefix";
+@import "../responsive/variable";
+@import "../responsive/mixin";
+
+@mixin set-spacing($infix: "") {
+  @each $prop, $abbrev in (margin: m, padding: p) {
+    // 加上前缀
+    $abbrev: $prefix + $abbrev;
+
+    @each $size, $length in $spacers {
+      #{$abbrev}#{$infix}-#{$size} {
+        #{$prop}: $length !important;
+      }
+
+      #{$abbrev}-t#{$infix}-#{$size},
+      #{$abbrev}-y#{$infix}-#{$size} {
+        #{$prop}-top: $length !important;
+      }
+
+      #{$abbrev}-r#{$infix}-#{$size},
+      #{$abbrev}-x#{$infix}-#{$size} {
+        #{$prop}-right: $length !important;
+      }
+
+      #{$abbrev}-b#{$infix}-#{$size},
+      #{$abbrev}-y#{$infix}-#{$size} {
+        #{$prop}-bottom: $length !important;
+      }
+
+      #{$abbrev}-l#{$infix}-#{$size},
+      #{$abbrev}-x#{$infix}-#{$size} {
+        #{$prop}-left: $length !important;
+      }
+    }
+  }
+
+  // margin auto 可用来自适应左右宽度
+  #{$prefix}m#{$infix}-auto {
+    margin: auto !important;
+  }
+
+  #{$prefix}m-t#{$infix}-auto,
+  #{$prefix}m-y#{$infix}-auto {
+    margin-top: auto !important;
+  }
+
+  #{$prefix}m-r#{$infix}-auto,
+  #{$prefix}m-x#{$infix}-auto {
+    margin-right: auto !important;
+  }
+
+  #{$prefix}m-b#{$infix}-auto,
+  #{$prefix}m-y#{$infix}-auto {
+    margin-bottom: auto !important;
+  }
+
+  #{$prefix}m-l#{$infix}-auto,
+  #{$prefix}m-x#{$infix}-auto {
+    margin-left: auto !important;
+  }
+}
+
+// 当开启响应式时
+@if ($enable-responsive) {
+  @each $breakpoint in map-keys($responsive-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      $infix: breakpoint-infix($breakpoint, $responsive-breakpoints);
+      @include set-spacing($infix);
+    }
+  }
+} @else {
+  @include set-spacing();
+}
+

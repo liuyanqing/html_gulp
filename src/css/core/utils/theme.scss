@@ -1,0 +1,35 @@
+@import "../base/variables/theme";
+@import "../base/variables/prefix";
+
+#{$prefix}theme-white-bg {
+  background-color: $white;
+}
+
+#{$prefix}theme-primary-bg {
+  background-color: $theme-primary;
+}
+
+#{$prefix}theme-primary {
+  color: $theme-primary;
+}
+
+#{$prefix}theme-white {
+  color: $white;
+}
+
+#{$prefix}theme-success {
+  color: $theme-success;
+}
+
+#{$prefix}theme-info {
+  color: $theme-info;
+}
+
+#{$prefix}theme-warning {
+  color: $theme-warning;
+}
+
+#{$prefix}theme-danger {
+  color: $theme-danger;
+}
+

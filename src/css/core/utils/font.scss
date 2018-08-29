@@ -1,0 +1,13 @@
+@import "../base/variables/prefix";
+
+$sizeList: 12, 14, 16, 18, 24, 32;
+
+@each $size in $sizeList {
+  #{$prefix}font-#{$size} {
+    font-size: #{$size}px !important;
+  }
+}
+
+#{$prefix}bold {
+  font-weight: bold;
+}

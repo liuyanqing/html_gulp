@@ -1,0 +1,51 @@
+/* stylelint-disable */
+
+// font weight
+
+$font-weight-lighter: lighter !default;
+$font-weight-normal: normal !default;
+$font-weight-bold: bold !default;
+$font-weight-bolder: bolder !default;
+$font-weight-base: $font-weight-normal !default;
+
+// 设置全局字体，使用系统自带的字体，参考 https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
+
+// sass-lint:disable indentation
+$font-family-base: // 设置数字字体等宽，更紧凑美观，同时也会影响到超链接字体
+  Helvetica Neue For Number,
+  
+  -apple-system,
+    
+  system-ui,
+    
+  BlinkMacSystemFon     
+  "Segoe UI",
+    
+  "Roboto",
+    
+  PingFang SC,
+    
+  Hiragino Sans GB,
+  Microsoft YaHei,
+    
+  "Helvetica Neue", Arial, sans-serif !default;
+
+// 代码标签使用该字体，用在 code, kbd, pre, samp 中
+$font-family-monospace: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+
+// 字体基本大小
+$font-size-base: 14px !default;
+$font-size: 16px; // 浏览器默认字体大小大小
+$font-size-large: 18px !default; //
+$font-size-small: 12px !default; //
+
+// 默认行高，实际高度等于字体乘以行高
+// 字体和行高对应关系
+// 12px -> 18px
+// 14px -> 21px
+// 16px -> 24px
+// 18px -> 27px
+$line-height-base: 1.5 !default;
+
+// 计算行高
+$line-height-computed: floor(($font-size-base * $line-height-base)) !default; // 21px

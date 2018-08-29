@@ -1,0 +1,10 @@
+// 定位
+@import "../base/variables/prefix";
+
+$positions: static, relative, absolute, fixed, sticky;
+
+@each $position in $positions {
+  #{$prefix}position-#{$position} {
+    position: $position !important;
+  }
+}

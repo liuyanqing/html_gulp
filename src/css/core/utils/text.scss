@@ -1,0 +1,35 @@
+// 文本样式
+@import "../base/mixins/text-ellipsis";
+@import "../base/variables/prefix";
+
+// 单行截取
+#{$prefix}text-ellipsis {
+  @include text-ellipsis;
+}
+
+// 强制换行
+#{$prefix}text-wrap {
+  word-break: break-all;
+}
+
+// 强制不换行
+#{$prefix}text-nowrap {
+  word-break: keep-all;
+  white-space: nowrap !important;
+}
+
+// 全部小写
+#{$prefix}text-lowercase {
+  text-transform: lowercase !important;
+}
+
+// 全部大写
+#{$prefix}text-uppercase {
+  text-transform: uppercase !important;
+}
+
+// 首字母大写
+#{$prefix}text-capitalize {
+  text-transform: capitalize !important;
+}
+

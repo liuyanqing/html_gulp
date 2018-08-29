@@ -1,0 +1,57 @@
+// Border 样式
+@import "../base/variables/border";
+@import "../base/variables/prefix";
+
+#{$prefix}border {
+  border: 1px solid $border-color !important;
+}
+
+#{$prefix}border-top {
+  border-top: 1px solid $border-color !important;
+}
+
+#{$prefix}border-bottom {
+  border-bottom: 1px solid $border-color !important;
+}
+
+#{$prefix}border-left {
+  border-left: 1px solid $border-color !important;
+}
+
+#{$prefix}border-right {
+  border-right: 1px solid $border-color !important;
+}
+
+#{$prefix}border-0 {
+  border: 0 !important;
+}
+
+#{$prefix}border-top-0 {
+  border-top: 0 !important;
+}
+
+#{$prefix}border-bottom-0 {
+  border-bottom: 0 !important;
+}
+
+#{$prefix}border-left-0 {
+  border-left: 0 !important;
+}
+
+#{$prefix}border-right-0 {
+  border-right: 0 !important;
+}
+
+// 透明色
+#{$prefix}border-transparent {
+  border-color: transparent !important;
+}
+
+#{$prefix}radius-circle {
+  border-radius: 50% !important;
+}
+
+#{$prefix}radius-0 {
+  border-radius: 0 !important;
+}
+

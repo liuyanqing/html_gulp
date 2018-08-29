@@ -1,0 +1,188 @@
+// 定制主题
+@import "theme";
+@import "core/index";
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0.5;
+    transform: scale(.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideTips {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10px, -10px);
+  }
+}
+
+html {
+  font-size: 32px;
+}
+
+html, body, .app-container, #firstPage {
+  height: 100vh;
+  height: 100%;
+}
+
+body {
+  max-width: 414px;
+  margin: 0 auto;
+  font-size: 16px;
+  overflow: hidden;
+  -webkit-overflow-scrolling: auto;
+}
+
+#secondPage {
+  overflow-y: auto;
+}
+
+.app-container {
+  background: $theme-primary;
+
+  .title {
+    width: 100%;
+    animation: bounceIn .5s ease-in;
+  }
+
+  img {
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .title img {
+    width: 74%;
+  }
+
+  .body-img img {
+    width: 96%;
+  }
+
+  .form-wrap {
+    margin: 0 38px;
+
+    .input-bar {
+      padding: 12px 16px;
+      border-radius: 5px;
+      background: $white;
+
+      > input {
+        width: 100%;
+        height: 25px;
+        border: none;
+        outline: none;
+        line-height: 25px;
+      }
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      border: 1px solid $theme-danger;
+      border-radius: 24px;
+      outline: none;
+      line-height: 48px;
+      background: $theme-danger;
+      box-shadow: 0 4px 40px 10px rgba($theme-danger, .1);
+    }
+  }
+
+  .service {
+    width: 98%;
+  }
+
+  .qr-code {
+    width: 215px;
+    margin: 0 auto;
+  }
+
+  .contact {
+    a {
+      color: $gray-base;
+    }
+  }
+}
+
+$arrow-size: 20px;
+.arrow {
+  bottom: $arrow-size/2;
+  width: $arrow-size;
+  height: $arrow-size;
+  margin-left: -$arrow-size/2;
+  border: 2px rgba($black, .5) solid;
+  border-left: none;
+  border-top: none;
+  transform: rotate(45deg);
+
+  &::before {
+    top: 50%;
+    content: "";
+    width: $arrow-size/2;
+    height: $arrow-size/2;
+    margin: -$arrow-size/4;
+    border-left: none;
+    border-top: none;
+    border-right: 1px rgba($black, .7) solid;
+    border-bottom: 1px rgba($black, .7) solid;
+    animation: slideTips 1.8s infinite;
+  }
+}
+
+.arrow,
+.arrow::before {
+  position: fixed;
+  left: 50%;
+}
+
+.bottom-fix {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.bottom-fix {
+  display: none;
+  background: #D0021B;
+  bottom: 0;
+  color: #fff;
+}
+
+.fixed-submit-btn {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 48px;
+  border: 1px solid $theme-danger;
+  outline: none;
+  line-height: 48px;
+  background: $theme-danger;
+  opacity: 0;
+}
+
+.fadeOut {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.fadeIn {
+  opacity: 1;
+  transition: opacity 1s;
+}
+

@@ -1,0 +1,31 @@
+// animation mixin
+
+@import "./variable";
+
+@mixin animation-ease-out {
+  animation-timing-function: $animation-ease-out;
+}
+
+@mixin animation-ease-in-out {
+  animation-timing-function: $animation-ease-in-out;
+}
+
+@mixin animation-ease-in {
+  animation-timing-function: $animation-ease-in;
+}
+
+@mixin animation-sharp {
+  animation-timing-function: $animation-sharp;
+}
+
+// animation transition
+@mixin animation-transition ($property, $duration: 120ms, $timing-function: ease-in-out, $delay: 0) {
+  $animation-function: map-get($animation-timing-function, $timing-function);
+  $animation-function: if($animation-function, $animation-function, $timing-function);
+
+  @if $delay > 0 {
+    transition: #{$property} $duration $animation-function $delay;
+  } @else {
+    transition: #{$property} $duration $animation-function;
+  }
+}

@@ -1,0 +1,20 @@
+/* stylelint-disable */
+@mixin iconbefore($font) {
+  &::before {
+    content: $font;
+    font-family: "iconfont";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    speak: none;
+  }
+}
+
+@mixin iconafter($font) {
+  &::after {
+    content: $font;
+    font-family: "iconfont";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    speak: none;
+  }
+}

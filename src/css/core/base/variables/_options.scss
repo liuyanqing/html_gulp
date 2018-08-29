@@ -1,0 +1,15 @@
+// Options
+// 可以通过设为 true 或 false 来开启或关闭相关功能
+
+// 是否开启响应式布局
+$enable-responsive: true !default;
+
+// 是否开启圆角
+$enable-rounded: true !default;
+
+// 是否开启阴影效果
+$enable-shadows: true !default;
+
+// 是否使用透明色来处理灰色系列颜色值
+$enable-transparent: true !default;
+

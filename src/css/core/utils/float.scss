@@ -1,0 +1,18 @@
+@import "../base/mixins/clearfix";
+@import "../base/variables/prefix";
+
+#{$prefix}clearfix {
+  @include clearfix();
+}
+
+#{$prefix}float-left {
+  float: left !important;
+}
+
+#{$prefix}float-right {
+  float: right !important;
+}
+
+#{$prefix}float-none {
+  float: none !important;
+}

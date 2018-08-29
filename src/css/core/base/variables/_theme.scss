@@ -1,0 +1,55 @@
+//== Colors
+
+$white: #fff !default;
+$black: #000 !default;
+
+// 灰色颜色
+$gray-base: #333 !default;
+$gray-darkest: #222 !default;
+$gray-darker: #666 !default;
+$gray-dark: #999 !default;
+$gray: #ccc !default;
+$gray-light: #ddd !default;
+$gray-lighter: #eee !default;
+$gray-lightest: #f7f7f7 !default;
+
+// 主题颜色
+$theme-primary: #4a90e2 !default; // 正常时颜色
+$theme-primary-light: lighten($theme-primary, 10%) !default; //
+$theme-primary-lighter: #bbdefb !default; //
+$theme-primary-lightest: #e3f2fd !default; //
+$theme-primary-dark: darken($theme-primary, 10%) !default; // 点击时颜色
+
+$theme-success: #5cb85c !default;
+$theme-info: #5bc0de !default;
+$theme-warning: #f0ad4e !default;
+$theme-danger: #d0021b !default;
+
+$theme-success-light: #81c784 !default;
+$theme-info-light: #4dd0e1 !default;
+$theme-warning-light: #fff176 !default;
+$theme-danger-light: #e57373 !default;
+
+$theme-success-lighter: #c8e6c9 !default;
+$theme-info-lighter: #b2ebf2 !default;
+$theme-warning-lighter: #fff9c4 !default;
+$theme-danger-lighter: #ffcdd2 !default;
+
+// 辅助颜色深色
+$theme-success-dark: #2e7d32 !default;
+$theme-info-dark: #00838f !default;
+$theme-warning-dark: #f9a825 !default;
+$theme-danger-dark: #c62828 !default;
+
+//** Background color for `<body>`.
+$body-bg: $white !default;
+//** Global text color on `<body>`.
+$text-color: $gray-base !default;
+
+//** Global textual link color.
+$link-color: $theme-primary !default;
+//** Link hover color set via `darken()` function.
+$link-hover-color: darken($link-color, 15%) !default;
+//** Link hover decoration.
+$link-hover-decoration: underline !default;
+

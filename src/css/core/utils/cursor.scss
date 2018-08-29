@@ -1,0 +1,10 @@
+@import "../base/variables/theme";
+@import "../base/variables/prefix";
+
+$cursorList: pointer, not-allowed;
+
+@each $cursor in $cursorList {
+  #{$prefix}cursor-#{$cursor} {
+    cursor: $cursor !important;
+  }
+}

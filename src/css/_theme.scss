@@ -1,0 +1,29 @@
+// 定义字体图标
+//@font-face {
+//  font-family: "iconfont";
+//  src: url("../fonts/iconfont.eot");
+//  src:
+//    url("../fonts/iconfont.eot?#iefix") format("embedded-opentype"),
+//    url("../fonts/iconfont.woff") format("woff"),
+//    url("../fonts/iconfont.ttf") format("truetype"),
+//    url("../fonts/iconfont.svg#iconfont") format("svg");
+//}
+
+// 默认主题
+@import "./core/base/variables";
+
+// 自定义主题
+$theme-primary: #dfb12c; // 正常时颜色
+$theme-primary-dark: #f5a623; // 点击时颜色
+$theme-primary-light: #fbedd6; //
+$theme-primary-lighter: #fbedd6; //
+$theme-primary-lightest: rgba(233, 183, 34, .1);
+$theme-danger: #d0021b;
+
+// 是否开启响应式布局
+$enable-responsive: false;
+//** Border color for inputs on focus
+$input-border-focus: $theme-primary;
+$link-color: #4a90e2;
+$pagination-hover-color: $theme-primary; //分页hover数字高亮
+

@@ -1,0 +1,43 @@
+@import "../base/variables/prefix";
+
+// 水平方向
+#{$prefix}text-left {
+  text-align: left !important;
+}
+
+#{$prefix}text-right {
+  text-align: right !important;
+}
+
+#{$prefix}text-center {
+  text-align: center !important;
+}
+
+#{$prefix}text-justify {
+  text-align: justify !important;
+}
+
+// 垂直方向
+#{$prefix}text-baseline { // Browser default
+  vertical-align: baseline !important;
+}
+
+#{$prefix}text-top {
+  vertical-align: top !important;
+}
+
+#{$prefix}text-middle {
+  vertical-align: middle !important;
+}
+
+#{$prefix}text-bottom {
+  vertical-align: bottom !important;
+}
+
+#{$prefix}text-text-top {
+  vertical-align: text-top !important;
+}
+
+#{$prefix}text-text-bottom {
+  vertical-align: text-bottom !important;
+}
