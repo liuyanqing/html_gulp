@@ -4,7 +4,6 @@
  */
 
 const gulp = require('gulp'),
-  requireDir = require('require-dir'),
   clean = require('gulp-clean'),
   runSequence = require('gulp-sequence');
 
@@ -23,7 +22,6 @@ const imagemin = require('gulp-imagemin'),
   inlineImg = require('gulp-base64'),
 
   useref = require('gulp-useref'),
-  revOrig = require('gulp-rev-orig'),
 
   inlinesource = require('gulp-inline-source'),
 
@@ -31,9 +29,6 @@ const imagemin = require('gulp-imagemin'),
 
 const gulpOpen = require('gulp-open'),
   connect = require('gulp-connect'),
-
-  copy = require('gulp-copy'),
-  gutil = require('gulp-util'),
 
   host = {
     path: 'dist/',
@@ -83,7 +78,6 @@ gulp.task('useref', () => {
     .pipe(useref())
     .pipe(gulpif('*.js', uglify()))
     .pipe(gulpif('*.css', cleanCSS()))
-    // .pipe(revOrig({ revType: 'hash', fileTypes: ['css'] }))
     .pipe(gulp.dest('dist/html'));
 });
 
