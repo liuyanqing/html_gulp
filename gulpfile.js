@@ -25,10 +25,10 @@ const imagemin = require('gulp-imagemin'),
 const gulpOpen = require('gulp-open'),
   connect = require('gulp-connect'),
 
-  host = {
+  server = {
     path: 'dist/',
     port: 8899,
-    html: 'guide.html',
+    host: '0.0.0.0'
   };
 
 gulp.task('clean', () => {
@@ -88,8 +88,9 @@ gulp.task('source-inline', () => {
 gulp.task('connect', () => {
   console.log('------ server start ------');
   connect.server({
-    root: host.path,
-    port: host.port,
+    root: server.path,
+    port: server.port,
+    host: server.host,
     livereload: true,
   });
 })
@@ -109,7 +110,6 @@ gulp.task('watch', () => {
     'src/**/*',
   ], function (info, file) {
     if (info.path.match(/\.html$/)) {
-      // console.info(info);
       buildHtml(info.path);
     }
     if (info.path.match(/\.scss/)) {
@@ -163,7 +163,6 @@ function releaseScss(src) {
     .pipe(gulp.dest('dist'))
     .pipe(connect.reload());
 }
-
 
 gulp.task('dev', runSequence('clean', 'init', ['connect', 'open', 'watch']));
 

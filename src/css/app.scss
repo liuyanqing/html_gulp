@@ -32,8 +32,8 @@ html {
 }
 
 html, body, .app-container, #firstPage {
-  height: 100vh;
   height: 100%;
+  height: 100vh;
 }
 
 body {
@@ -41,16 +41,17 @@ body {
   margin: 0 auto;
   font-size: 16px;
   overflow: hidden;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: auto;
 }
 
 #secondPage {
   overflow-y: auto;
+  background: $theme-primary;
 }
 
 .app-container {
   background: $theme-primary;
-
+  
   .title {
     width: 100%;
     animation: bounceIn .5s ease-in;

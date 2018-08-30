@@ -17,14 +17,12 @@
     // 浏览器视口的高度
     this.clientHeight = document.compatMode == "CSS1Compat" ? windowHeight = document.documentElement.clientHeight :
       windowHeight = document.body.clientHeight
-    // 滚动条在Y轴上的滚动距离
-    this.scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop || 0
     // 文档的总高度
     this.documentHeight = document.body.scrollHeight || document.documentElement.scrollHeight
     // 滑动buffer
-    this.slidebuffer = 10;
+    this.slidebuffer = 8;
     // 滚动buffer
-    this.buffer = 50;
+    this.buffer = 80;
   };
 
   App.prototype = {
@@ -32,15 +30,59 @@
     constructor: App,
 
     init: function () {
-
-      this.attachEvent();
+      this.scrollToTop()
+      this.attachEvent()
+    },
+    // 滚动条在Y轴上的滚动距离
+    scrollTop: function () {
+      return document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+    },
+    scrollToTop: function () {
+      document.body.scrollTop = document.documentElement.scrollTop = window.pageYOffset = 0
     },
     // 绑定事件
     attachEvent: function () {
-      // 监听touch事件
-      this.handleTouch();
+      var _this = this;
+      var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
 
+      document.addEventListener('DOMContentLoaded', _this.onBeforeScrollStart())
+      
+      // 监听touch事件
+      this.handleTouch()
+
+      $('.fixed-submit-btn').on('click', function () {
+        _this.handlePrevPage()
+      })
+
+      $('#submitBtn').on('click', function () {
+        _this.handleSubmit()
+      })
+
+      document.body.addEventListener(resizeEvt, function (e) {
+        console.log('resize')
+      })
+      document.body.addEventListener('focusin', function (e) {
+        
+      });
+      document.body.addEventListener('focusout', function (e) {
+        console.log('focusout')
+        _this.scrollToTop()
+      });
     },
+    onBeforeScrollStart: function () {
+      /* var target = e.target;
+      while (target.nodeType != 1) target = target.parentNode;
+      if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+      e.preventDefault(); */
+      [].slice.call(document.querySelectorAll('input, select, button')).forEach(function (el) {
+        el.addEventListener(('ontouchstart' in window) ? 'touchstart' : 'mousedown', function (e) {
+          e.stopPropagation();
+        })
+        el.addEventListener(('ontouchend' in window) ? 'touchend' : 'mousedown', function (e) {
+          e.stopPropagation();
+        })
+      })
+    }, 
     // 处理模拟滚动
     handleTouch: function () {
       var _this = this;
@@ -53,22 +95,17 @@
         firstPage = $('#firstPage').offset().top
       }, { passive: false });
       document.body.addEventListener('touchmove', function (e) {
-        e.preventDefault() 
+        e.preventDefault()
         console.log('move')
         var y = e.touches[0].pageY
         var change = y - starty
-        if ((Math.abs(change) > _this.slidebuffer) && (Math.abs(change) <= _this.buffer)) {
-          _this.handleSlideScroll(firstPage + change)
-          if (!_this.timer) {
-            _this.timer = setTimeout(function () {
-              _this.handleSlideScroll(firstPage)
-              clearTimeout(_this.timer)
-              _this.timer = null
-            }, 300);
-          }
+        var secondPage = $('#secondPage').offset().top
+        if ((y > secondPage) && (change < -_this.slidebuffer)) {
+          _this.handleScroll(firstPage + change - 100)
+        } else if ((Math.abs(change) > _this.slidebuffer) && (Math.abs(change) <= _this.buffer)) {
+          _this.handleFlexSlide(firstPage + change)
         } else {
           clearTimeout(_this.timer)
-          _this.timer = null
         }
       }, { passive: false });
       document.body.addEventListener('touchend', function (e) {
@@ -76,24 +113,20 @@
         var change = e.changedTouches[0].pageY - starty
         var secondPage = $('#secondPage').offset().top
         console.log(change)
-        if ($(e.target).closest(".fixed-submit-btn").length) {
-          _this.handlePrevPage()
-          return
-        }
-        if ($(e.target).closest("#submitBtn").length) {
-          _this.handleSubmit()
-          return
-        }
-        if (change < (- _this.buffer)) {
+        if ((starty > secondPage) && (change < -_this.slidebuffer)) {
+          _this.handleScroll(firstPage + change - 100)
+          // _this.throttle(_this.handleScroll(firstPage + change - 100), 100, 200)
+        } else if ((starty < secondPage) && (change < -_this.buffer)) {
           // 滑到下一张
-          if (starty < secondPage) {
-            _this.handleNextPage()
-          } else {
-            _this.handleThirdPage()
-          }      
+          _this.handleNextPage()
         } else if (change > _this.buffer) {
           // 滑到上一张
           _this.handlePrevPage()
+        } else {
+          clearTimeout(_this.timer)
+          _this.timer = setTimeout(function () {
+            _this.handleFlexSlide(firstPage)            
+          }, 300);
         }
       }, { passive: false });
     },
@@ -142,31 +175,56 @@
     handleNextPage: function () {
       var style = {
         'transform': 'translate3d(0, -' + this.clientHeight + 'px, 0)',
-        'transition': 'all 0.2s'
+        'transition': 'all 300ms cubic-bezier(.1, .57, .1, 1)',
+        '-webkit-transition': 'all 300ms cubic-bezier(.1, .57, .1, 1)'
       };
       $("#secondPage").css(style);
       $("#firstPage").css(style);
       $('.fixed-submit-btn').removeClass('fadeOut')
       $('.fixed-submit-btn').addClass('fadeIn')
     },
-    // 第三页
-    handleThirdPage: function () {
+    // 滚动
+    handleScroll: function (y) {
+      var distance = (y < -988) ? -988 : y
       var style = {
-        'transform': 'translate3d(0, ' + -1000 + 'px, 0)',
-        'transition': 'all 0.2s'
-      }
-      $("#secondPage").css(style)
-      $("#firstPage").css(style)
-    },
-    // 滑动
-    handleSlideScroll: function (trans) {
-      var style = {
-        'transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
-        '-webkit-transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
-        'transform': 'translate3d(0, ' + trans + 'px, 0)',
+        'transition': 'translate3d 200ms cubic-bezier(0.390, 0.575, 0.565, 1.000)',
+        '-webkit-transition': 'translate3d 200ms cubic-bezier(0.390, 0.575, 0.565, 1.000)',
+        'transform': 'translate3d(0, ' + distance + 'px, 0)',
       }
       $("#secondPage").css(style);
       $("#firstPage").css(style);
+    },
+    // 弹性滑动
+    handleFlexSlide: function (y) {
+      var distance = (y < -988) ? -988 : y
+      var style = {
+        'transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
+        '-webkit-transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
+        'transform': 'translate3d(0, ' + distance + 'px, 0)',
+      }
+      $("#secondPage").css(style);
+      $("#firstPage").css(style);
+    },
+    throttle: function (fn, wait, time) {
+      var previous = null; //记录上一次运行的时间
+      var timer = null;
+
+      return function () {
+        var now = +new Date();
+
+        if (!previous) previous = now;
+        //当上一次执行的时间与当前的时间差大于设置的执行间隔时长的话，就主动执行一次
+        if (now - previous > time) {
+          clearTimeout(timer);
+          fn();
+          previous = now;// 执行函数后，马上记录当前时间
+        } else {
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            fn();
+          }, wait);
+        }
+      }
     },
     // 构造jsonp请求
     jsonpSubmit: function (data) {
