@@ -1,8 +1,3 @@
-/*
- * @ Desc: gulp rules
- * @ Author: lizhiyang1
- */
-
 const gulp = require('gulp'),
   clean = require('gulp-clean'),
   runSequence = require('gulp-sequence');

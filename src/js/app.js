@@ -13,7 +13,7 @@
   var App = function () {
 
     this.serverUrl = '//cbp.jdpay.com/open/activity-818';
-
+    this.timer = null;
     // 浏览器视口的高度
     this.clientHeight = document.compatMode == "CSS1Compat" ? windowHeight = document.documentElement.clientHeight :
       windowHeight = document.body.clientHeight
@@ -21,6 +21,8 @@
     this.scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop || 0
     // 文档的总高度
     this.documentHeight = document.body.scrollHeight || document.documentElement.scrollHeight
+    // 滑动buffer
+    this.slidebuffer = 10;
     // 滚动buffer
     this.buffer = 50;
   };
@@ -33,65 +35,67 @@
 
       this.attachEvent();
     },
-
     // 绑定事件
     attachEvent: function () {
-      var _this = this;
-
       // 监听touch事件
       this.handleTouch();
 
-      $(document.body).on('click', '.fixed-submit-btn', function () {
-        _this.handlePrevPage();
-      });
-
-      $(document.body).on('click', '#submitBtn', function () {
-        _this.handleSubmit();
-      });
     },
-
     // 处理模拟滚动
     handleTouch: function () {
       var _this = this;
+      var firstPage = 0;
       var starty;
-      var slideStyle = function () {
-        return {
-          'transform': 'translate3d(0, ' + -1000 + 'px, 0)',
-          'transition': 'all 0.2s'
-        }
-      }
-      document.body.addEventListener('touchmove', function (e) {
-        e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
-      }, { 
-        passive: false 
-      });
-      // 滚动超过buffer时，通过设置transform: translate3d(0, y, 0)来模拟滚动
-      $(document).on('touchstart', function (e) {
+      document.body.addEventListener('touchstart', function (e) {
+        e.preventDefault()
         console.log('start')
         starty = e.touches[0].pageY
-      }).on('touchend', function (e) {
+        firstPage = $('#firstPage').offset().top
+      }, { passive: false });
+      document.body.addEventListener('touchmove', function (e) {
+        e.preventDefault() 
+        console.log('move')
+        var y = e.touches[0].pageY
+        var change = y - starty
+        if ((Math.abs(change) > _this.slidebuffer) && (Math.abs(change) <= _this.buffer)) {
+          _this.handleSlideScroll(firstPage + change)
+          if (!_this.timer) {
+            _this.timer = setTimeout(function () {
+              _this.handleSlideScroll(firstPage)
+              clearTimeout(_this.timer)
+              _this.timer = null
+            }, 300);
+          }
+        } else {
+          clearTimeout(_this.timer)
+          _this.timer = null
+        }
+      }, { passive: false });
+      document.body.addEventListener('touchend', function (e) {
+        e.preventDefault()
         var change = e.changedTouches[0].pageY - starty
         var secondPage = $('#secondPage').offset().top
-        console.log('end')
-        if (change < (- _this.buffer)) { 
+        console.log(change)
+        if ($(e.target).closest(".fixed-submit-btn").length) {
+          _this.handlePrevPage()
+          return
+        }
+        if ($(e.target).closest("#submitBtn").length) {
+          _this.handleSubmit()
+          return
+        }
+        if (change < (- _this.buffer)) {
           // 滑到下一张
           if (starty < secondPage) {
             _this.handleNextPage()
           } else {
-            $("#secondPage").css(slideStyle())
-            $("#firstPage").css(slideStyle())
-          }
+            _this.handleThirdPage()
+          }      
         } else if (change > _this.buffer) {
           // 滑到上一张
-          if (starty > secondPage) {
-            _this.handlePrevPage()
-          } else {
-            location.reload()
-          }
+          _this.handlePrevPage()
         }
-      }).on('touchcancel', function (e) {
-        console.log('touchcancel')
-      })
+      }, { passive: false });
     },
 
     // 提交信息
@@ -126,7 +130,8 @@
     handlePrevPage: function () {
       var style = {
         'transform': 'translate3d(0, 0, 0)',
-        'transition': 'all 0.2s'
+        'transition': 'all 300ms cubic-bezier(.1, .57, .1, 1)',
+        '-webkit-transition': 'all 300ms cubic-bezier(.1, .57, .1, 1)'
       };
       $("#secondPage").css(style)
       $("#firstPage").css(style)
@@ -144,7 +149,25 @@
       $('.fixed-submit-btn').removeClass('fadeOut')
       $('.fixed-submit-btn').addClass('fadeIn')
     },
-
+    // 第三页
+    handleThirdPage: function () {
+      var style = {
+        'transform': 'translate3d(0, ' + -1000 + 'px, 0)',
+        'transition': 'all 0.2s'
+      }
+      $("#secondPage").css(style)
+      $("#firstPage").css(style)
+    },
+    // 滑动
+    handleSlideScroll: function (trans) {
+      var style = {
+        'transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
+        '-webkit-transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
+        'transform': 'translate3d(0, ' + trans + 'px, 0)',
+      }
+      $("#secondPage").css(style);
+      $("#firstPage").css(style);
+    },
     // 构造jsonp请求
     jsonpSubmit: function (data) {
       var dataStr = '';
