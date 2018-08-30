@@ -2,10 +2,10 @@
 
   // 分享文案
   window.activityConfig = {
-    imgUrl: 'https://static-ftcms.jd.com/p/files/5b769363a7a433706cdc3d85.png',
+    imgUrl: 'https://static-ftcms.jd.com/p/files/5b87b533b26d47706d23638b.jpg',
     shareUrl: location.href,
-    title: '智能客服',
-    desc: '惠优企 无忧贴',
+    title: '京东票据 — 惠优企 无忧贴',
+    desc: '京东金融推出的专业的票据融资服务平台',
     weixinCallback: function () {
     },
   };
@@ -58,13 +58,13 @@
         _this.handleSubmit()
       })
 
-      document.body.addEventListener(resizeEvt, function (e) {
+      document.body.addEventListener(resizeEvt, function () {
         console.log('resize')
       })
-      document.body.addEventListener('focusin', function (e) {
+      document.body.addEventListener('focusin', function () {
         
       });
-      document.body.addEventListener('focusout', function (e) {
+      document.body.addEventListener('focusout', function () {
         console.log('focusout')
         _this.scrollToTop()
       });

@@ -7,7 +7,6 @@ const imagemin = require('gulp-imagemin'),
   imageminJpegtran = require('imagemin-jpegtran'),
 
   fileinclude = require('gulp-file-include'),
-
   gulpif = require('gulp-if'),
   uglify = require('gulp-uglify'),
   scss = require('gulp-sass'),
