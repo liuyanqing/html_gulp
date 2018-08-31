@@ -15,8 +15,7 @@
     this.serverUrl = '//cbp.jdpay.com/open/activity-818';
     this.timer = null;
     // 浏览器视口的高度
-    this.clientHeight = document.compatMode == "CSS1Compat" ? windowHeight = document.documentElement.clientHeight :
-      windowHeight = document.body.clientHeight
+    this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
     // 文档的总高度
     this.documentHeight = document.body.scrollHeight || document.documentElement.scrollHeight
     // 滑动buffer
@@ -32,6 +31,9 @@
     init: function () {
       this.scrollToTop()
       this.attachEvent()
+    },
+    getClientHeight: function () {
+      return document.documentElement.clientHeight || document.body.clientHeight
     },
     // 滚动条在Y轴上的滚动距离
     scrollTop: function () {
@@ -53,27 +55,31 @@
       $('.fixed-submit-btn').on('click', function () {
         _this.handlePrevPage()
       })
-
       $('#submitBtn').on('click', function () {
         _this.handleSubmit()
       })
-
-      document.body.addEventListener(resizeEvt, function () {
-        console.log('resize')
+      // Android
+      window.addEventListener(resizeEvt, function () {
+        var nowClientHeight = _this.getClientHeight()
+        var y = _this.clientHeight - nowClientHeight
+        if (y > 100) {
+          // 键盘弹起
+          _this.handleKeyUp(-y)
+        } else {
+          // 键盘收起
+          _this.handleKeyUp(y)
+          $('input').blur()
+        }
       })
       document.body.addEventListener('focusin', function () {
-        
       });
+      // IOS
       document.body.addEventListener('focusout', function () {
         console.log('focusout')
         _this.scrollToTop()
       });
     },
     onBeforeScrollStart: function () {
-      /* var target = e.target;
-      while (target.nodeType != 1) target = target.parentNode;
-      if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
-      e.preventDefault(); */
       [].slice.call(document.querySelectorAll('input, select, button')).forEach(function (el) {
         el.addEventListener(('ontouchstart' in window) ? 'touchstart' : 'mousedown', function (e) {
           e.stopPropagation();
@@ -146,7 +152,7 @@
       window.jsonpCallback = function (res) {
         if (res.code === '0') {
           alert('提交成功');
-
+          $('#submitBtn').attr('disabled', false)
           //Todo 记录到storage，防止重复提交
 
           //Todo 埋点示例
@@ -174,7 +180,7 @@
     // 下一页
     handleNextPage: function () {
       var style = {
-        'transform': 'translate3d(0, -' + this.clientHeight + 'px, 0)',
+        'transform': 'translate3d(0, -' + this.getClientHeight() + 'px, 0)',
         'transition': 'all 300ms cubic-bezier(.1, .57, .1, 1)',
         '-webkit-transition': 'all 300ms cubic-bezier(.1, .57, .1, 1)'
       };
@@ -203,6 +209,17 @@
         'transform': 'translate3d(0, ' + distance + 'px, 0)',
       }
       $("#secondPage").css(style);
+      $("#firstPage").css(style);
+    },
+    // 键盘弹起
+    handleKeyUp: function (y) {
+      // var distance = (y < -988) ? -988 : y
+      var style = {
+        'transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
+        '-webkit-transition': 'translate3d 1s cubic-bezier(.1, .57, .1, 1)',
+        'transform': 'translate3d(0, ' + y + 'px, 0)',
+      }
+      // $("#secondPage").css(style);
       $("#firstPage").css(style);
     },
     throttle: function (fn, wait, time) {
